@@ -22,6 +22,9 @@ This repository contains my weekly exercise solutions for the Data Visualization
 ├── week09/
 │   ├── lecture09_exercise.py
 │   └── requirements.txt
+├── week10/
+│   ├── lecture10_exercise.py
+│   └── requirements.txt
 ├── ...
 ├── week13/
 │   └── lecture13_exercise.py
@@ -33,3 +36,4 @@ This repository contains my weekly exercise solutions for the Data Visualization
 | Week | Exercise | Live app |
 |------|----------|----------|
 | 09 | World Happiness Dashboard (Streamlit) | 🌐 https://dataviz-exercises-ismail-emir-alanyalioglu-week09.streamlit.app/ |
+| 10 | CO2 Emissions Explorer (Streamlit) | 🌐 https://dataviz-exercises-ismail-emir-alanyalioglu-week10.streamlit.app/ |
