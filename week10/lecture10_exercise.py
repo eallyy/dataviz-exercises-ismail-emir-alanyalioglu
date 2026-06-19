@@ -57,6 +57,11 @@ total_first = filtered[filtered["Year"] == first_year][metric].sum()
 pct = (total_last - total_first) / total_first * 100 if total_first else 0
 top_emitter = filtered.groupby("Country")[metric].sum().idxmax()
 
+# Avoid colour clutter: once more than 3 countries are selected (or the user
+# asks for it), only the top emitter keeps an accent colour and the rest go grey.
+ACCENT, MUTED = "#1f77b4", "#d9d9d9"
+focus = highlight or len(countries) > 3
+
 k1, k2, k3 = st.columns(3)
 k1.metric(f"Total {metric_label} ({last_year})", f"{total_last:,.1f}")
 k2.metric(f"Change {first_year}→{last_year}", f"{pct:+.1f}%")
@@ -65,8 +70,8 @@ k3.metric(f"Top emitter ({last_year})", top_emitter)
 col_left, col_right = st.columns([2, 1])
 
 with col_left:
-    if highlight:
-        colours = {c: ("#1f77b4" if c == top_emitter else "#d9d9d9") for c in countries}
+    if focus:
+        colours = {c: (ACCENT if c == top_emitter else MUTED) for c in countries}
         fig = px.line(
             filtered, x="Year", y=metric, color="Country",
             color_discrete_map=colours,
@@ -88,9 +93,13 @@ with col_left:
 
 with col_right:
     rank = last.sort_values(metric, ascending=False)
+    if focus:
+        bar_colours = {c: (ACCENT if c == top_emitter else MUTED) for c in countries}
+    else:
+        bar_colours = {top_emitter: ACCENT}
     fig2 = px.bar(
         rank, x=metric, y="Country", orientation="h",
-        color="Country", color_discrete_map={top_emitter: "#1f77b4"},
+        color="Country", color_discrete_map=bar_colours,
         title=f"{top_emitter} tops the {last_year} ranking",
     )
     fig2.update_layout(
